@@ -6,16 +6,62 @@ use think\Controller;
 
 class Index extends Controller
 {
+    /** 用户模型 */
+    protected $BusinessModel = null;
+
+    public function _initialize()
+    {
+        $this->BusinessModel = model('business.Business');
+    }
+
     public function index()
     {
         return $this->fetch();
     }
 
-    /**
+    /** 
      * 注册
      */
     public function register()
     {
+        if ($this->request->isPost()) {
+            $mobile = $this->request->param('mobile', '', 'trim');
+            $password = $this->request->param('password', '', 'trim');
+
+
+            if (empty($password)) {
+                $this->error('密码不能为空');
+            }
+            /** 生成密码盐 */
+            $salt = build_ranstr();
+            /** md5密码 */
+            $password = md5($password . $salt);
+
+            // 组装注册的数据
+            $data = [
+                'mobile' => $mobile,
+                'password' => $password,
+                'salt' => $salt,
+                'money' => 0,
+                'auth' => 0,
+                'deal' => 0,
+            ];
+
+            // ? 查询用户来源
+            $source = model('business.Source')->where(['name' => ['LIKE', '%云课堂%']])->find();
+            if ($source) {
+                $data['sourceid'] = $source['id'];
+            }
+
+            // halt($data);
+
+            $result = $this->BusinessModel->validate('common/business/Business.register')->save($data);
+            if ($result === false) {
+                $this->error($this->BusinessModel->getError());
+            } else {
+                $this->success('注册成功', url('/home/index/login'));
+            }
+        }
         return $this->fetch();
     }
     /**
