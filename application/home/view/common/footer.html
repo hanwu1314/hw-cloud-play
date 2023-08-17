@@ -1,6 +1,6 @@
 <div class="footer">
     <nav class="footer-bar">
-        <div class="tab-item  mui-active">
+        <div class="tab-item">
             <a href="{:url('/')}">
                 <span class="mui-icon mui-icon-home"></span>
                 <span class="mui-tab-label">首页</span>
@@ -20,3 +20,17 @@
         </div>
     </nav>
 </div>
+<script>
+    // 获取地址路径并且转为数组
+    let pathArr = location.pathname.split('/');
+    // 过滤数组里面的元素
+    pathArr = pathArr.filter(val => val && val.trim())
+    // 截取数组并且转成字符串
+    let path = pathArr.slice(0, 2).join('/');
+    // 截取数组并且转成字符串
+    if (path == '' || path == '/') {
+        $('.footer-bar .tab-item').eq(0).addClass('mui-active')
+    } else if (path == 'home/business') {
+        $('.footer-bar .tab-item').eq(2).addClass('mui-active')
+    }
+</script>
