@@ -3,7 +3,7 @@
 
 <div class="user">
     <div class="avatar wow fadeInUp">
-        <img src="/assets/home/images/avatar.jpg" />
+        <img src="{$LoginBusiness.avatar_cdn}" />
     </div>
 </div>
 
@@ -23,7 +23,7 @@
     </div>
     <div class="mui-input-row">
         <label>密码</label>
-        <input type="password" class="mui-input-password" placeholder="密码为空不修改密码">
+        <input type="password" name="password" class="mui-input-password" placeholder="密码为空不修改密码">
     </div>
     <div class="mui-input-row">
         <label>性别</label>
@@ -46,7 +46,7 @@
     <input type="file" class="form-control" id="avatar" name="avatar" style="display: none;" />
 
     <div class="mui-button-row">
-        <button type="button" class="mui-btn mui-btn-primary">确认</button>
+        <button type="submit" class="mui-btn mui-btn-primary">确认</button>
         <button type="button" class="mui-btn mui-btn-danger" onclick="history.go(-1)">返回</button>
     </div>
 </form>
@@ -56,6 +56,16 @@
 <script src="/assets/home/plugin/city/js/city-picker.min.js"></script>
 
 <script>
+    // 获取省市区
+    let province = `{$LoginBusiness.province}`;
+    let city = `{$LoginBusiness.city}`;
+    let district = `{$LoginBusiness.district}`;
+
+    let code = district || city || province;
+
+    // 更新地区的值
+    $('#city').val(code);
+    $('#code').val(code);
     // 选择地区
     $("#city").on("cp:updated", function () {
         var citypicker = $(this).data("citypicker");

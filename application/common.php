@@ -171,9 +171,9 @@ if (!function_exists('copydirs')) {
             mkdir($dest, 0755, true);
         }
         foreach ($iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::SELF_FIRST
-            ) as $item) {
+            new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        ) as $item) {
             if ($item->isDir()) {
                 $sontDir = $dest . DS . $iterator->getSubPathName();
                 if (!is_dir($sontDir)) {
@@ -591,5 +591,43 @@ if (!function_exists('build_ranstr')) {
             $str .= $chars[mt_rand(0, $charsLen)];    //随机取出一位
         }
         return $str;
+    }
+}
+
+if (!function_exists('build_upload')) {
+    /**
+     * 单图上传
+     * @param String $name 图片名称
+     * @return Array 返回结果集
+     */
+    function build_upload($name)
+    {
+        $result = [
+            'code' => 0,
+            'msg' => '没有图片上传',
+            'data' => null
+        ];
+
+        $file = request()->file($name);
+
+        if ($file) {
+            // 把图片保存指定的目录
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+
+            if ($info) {
+                // 修正路径的斜杠
+                $fileName = str_replace('\\', '/', $info->getSaveName());
+
+                $result = [
+                    'code' => 1,
+                    'msg' => '上传成功',
+                    'data' => '/uploads/' . $fileName
+                ];
+            } else {
+                $result['msg'] = $file->getError();
+            }
+        }
+
+        return $result;
     }
 }
