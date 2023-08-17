@@ -24,6 +24,11 @@ class Index extends Controller
      */
     public function register()
     {
+        // 判断是否已经登录 登录后重定向到首页
+        $LoginBusiness = cookie('LoginBusiness') ?? '';
+        if ($LoginBusiness) {
+            $this->redirect(url('/home/business/index'));
+        }
         if ($this->request->isPost()) {
             $mobile = $this->request->param('mobile', '', 'trim');
             $password = $this->request->param('password', '', 'trim');
@@ -54,7 +59,6 @@ class Index extends Controller
             }
 
             // halt($data);
-
             $result = $this->BusinessModel->validate('common/business/Business.register')->save($data);
             if ($result === false) {
                 $this->error($this->BusinessModel->getError());
@@ -69,6 +73,11 @@ class Index extends Controller
      */
     public function login()
     {
+        // 判断是否已经登录 登录后重定向到首页
+        $LoginBusiness = cookie('LoginBusiness') ?? '';
+        if ($LoginBusiness) {
+            $this->redirect(url('/home/business/index'));
+        }
         if ($this->request->isPost()) {
             $mobile = $this->request->param('mobile', '', 'trim');
             $password = $this->request->param('password', '', 'trim');
@@ -91,5 +100,15 @@ class Index extends Controller
             $this->success('登录成功', url('home/business/index'));
         }
         return $this->fetch();
+    }
+    /**
+     * 注销
+     */
+    public function logout()
+    {
+        if ($this->request->isAjax()) {
+            cookie('LoginBusiness', null);
+            $this->success('退出账号成功');
+        }
     }
 }
