@@ -3,12 +3,11 @@
 <!-- 头部 -->
 <div class="user">
     <div class="avatar wow fadeInUp">
-        <img src="/assets/home/images/avatar.jpg" />
+        <img src="{$LoginBusiness.avatar_cdn}" />
     </div>
 
-    <div class="nickname wow fadeInUp" data-wow-delay="100ms">FunkyRicky</div>
-
-    <a href="login.html" class="login wow fadeInUp" data-wow-delay="200ms">登录</a>
+    <div class="nickname wow fadeInUp" data-wow-delay="100ms">{$LoginBusiness.nickname ?: $LoginBusiness.mobile_text}
+    </div>
 </div>
 
 <!-- 菜单 -->
@@ -50,3 +49,33 @@
 
 <!-- 引入底部 -->
 {include file='common/footer'/}
+<script>
+    $('#logout').click(() => {
+        mui.confirm(
+            '是否确认退出',
+            '退出提醒',
+            ['确认', '取消'],
+            function (res) {
+                if (res.index === 0) {
+                    $.ajax({
+                        type: 'post',
+                        url: `{:url('/home/index/logout')}`,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.code === 1) {
+                                mui.toast(result.msg);
+
+                                $('.mui-popup-backdrop').remove()
+                                $('.mui-popup').remove()
+
+                                setInterval(() => {
+                                    location.href = `{:url('/home/index/login')}`;
+                                }, 2000);
+                            }
+                        }
+                    });
+                }
+            }
+        )
+    })
+</script>

@@ -41,4 +41,5 @@ return array (
     'category2' => 'Category2',
     'custom' => 'Custom',
   ),
+  'url' => 'http://fast.com/',
 );

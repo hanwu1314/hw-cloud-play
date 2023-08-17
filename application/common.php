@@ -170,12 +170,10 @@ if (!function_exists('copydirs')) {
         if (!is_dir($dest)) {
             mkdir($dest, 0755, true);
         }
-        foreach (
-            $iterator = new RecursiveIteratorIterator(
+        foreach ($iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
                 RecursiveIteratorIterator::SELF_FIRST
-            ) as $item
-        ) {
+            ) as $item) {
             if ($item->isDir()) {
                 $sontDir = $dest . DS . $iterator->getSubPathName();
                 if (!is_dir($sontDir)) {
@@ -558,5 +556,40 @@ if (!function_exists('build_suffix_image')) {
         </svg>
 EOT;
         return $icon;
+    }
+}
+
+/*
+!==== 下面的函数都是自己添加 ==== 
+*/
+
+if (!function_exists('build_ranstr')) {
+    /**
+     * 获得随机字符串
+     * @param   int     $len        需要的长度
+     * @param   bool    $special    是否需要特殊符号
+     * @return  string  返回随机字符串
+     */
+    function build_ranstr($len = 8, $special = false)
+    {
+        $chars = range('a', 'z');
+        $chars = array_merge($chars, range('A', 'Z'));
+        $chars = array_merge($chars, range(0, 9));
+
+        if ($special) {
+            $chars = array_merge($chars, array(
+                "!", "@", "#", "$", "?", "|", "{", "/", ":", ";",
+                "%", "^", "&", "*", "(", ")", "-", "_", "[", "]",
+                "}", "<", ">", "~", "+", "=", ",", "."
+            ));
+        }
+
+        $charsLen = count($chars) - 1;
+        shuffle($chars); //打乱数组顺序
+        $str = ''; // 用来拼接的
+        for ($i = 0; $i < $len; $i++) {
+            $str .= $chars[mt_rand(0, $charsLen)];    //随机取出一位
+        }
+        return $str;
     }
 }

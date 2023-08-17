@@ -2,9 +2,9 @@
 
 namespace app\home\controller;
 
-use think\Controller;
+use app\common\controller\Home;
 
-class Business extends Controller
+class Business extends Home
 {
     public function index()
     {
