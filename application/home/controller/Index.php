@@ -69,6 +69,27 @@ class Index extends Controller
      */
     public function login()
     {
+        if ($this->request->isPost()) {
+            $mobile = $this->request->param('mobile', '', 'trim');
+            $password = $this->request->param('password', '', 'trim');
+
+            $business = $this->BusinessModel->where(['mobile' => $mobile])->find();
+
+            if (!$business) {
+                $this->error('用户不存在');
+            }
+            if (md5($password . $business['salt']) != $business['password']) {
+                $this->error('密码错误');
+            }
+
+            $data = [
+                'id' => $business['id'],
+                'mobile' => $business['mobile']
+            ];
+            cookie('LoginBusiness', $data);
+
+            $this->success('登录成功', url('home/business/index'));
+        }
         return $this->fetch();
     }
 }
