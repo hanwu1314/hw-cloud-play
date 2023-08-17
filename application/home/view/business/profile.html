@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="/assets/home/plugin/city/css/city-picker.css">
+<link rel="stylesheet" href="/assets/home/css/profile.css">
+
+<div class="user">
+    <div class="avatar wow fadeInUp">
+        <img src="/assets/home/images/avatar.jpg" />
+    </div>
+</div>
+
+<form class="mui-input-group" method="post" enctype="multipart/form-data">
+    <div class="mui-input-row">
+        <label>昵称</label>
+        <input type="text" name="nickname" value="{$LoginBusiness.nickname}" class="mui-input-clear"
+            placeholder="请输入昵称">
+    </div>
+    <div class="mui-input-row">
+        <label>手机号码</label>
+        <input type="text" value="{$LoginBusiness.mobile}" disabled class="mui-input-clear" placeholder="请输入手机号码">
+    </div>
+    <div class="mui-input-row">
+        <label>邮箱</label>
+        <input type="text" name="email" value="{$LoginBusiness.email}" class="mui-input-clear" placeholder="请输入邮箱">
+    </div>
+    <div class="mui-input-row">
+        <label>密码</label>
+        <input type="password" class="mui-input-password" placeholder="密码为空不修改密码">
+    </div>
+    <div class="mui-input-row">
+        <label>性别</label>
+        <select name="gender">
+            <option value="0" {$LoginBusiness.gender==0 ? 'selected' : '' }>保密</option>
+            <option value="1" {$LoginBusiness.gender==1 ? 'selected' : '' }>男</option>
+            <option value="2" {$LoginBusiness.gender==2 ? 'selected' : '' }>女</option>
+        </select>
+    </div>
+    <div class="mui-input-row region">
+        <label>地区</label>
+        <div class="citypicker">
+            <input id="city" type="text" data-toggle="city-picker" name="region" readonly />
+            <!-- 隐藏域 -->
+            <input type="hidden" name="code" id="code">
+        </div>
+    </div>
+
+    <!-- 头像文件上传 -->
+    <input type="file" class="form-control" id="avatar" name="avatar" style="display: none;" />
+
+    <div class="mui-button-row">
+        <button type="button" class="mui-btn mui-btn-primary">确认</button>
+        <button type="button" class="mui-btn mui-btn-danger" onclick="history.go(-1)">返回</button>
+    </div>
+</form>
+
+
+<script src="/assets/home/plugin/city/js/city-picker.data.min.js"></script>
+<script src="/assets/home/plugin/city/js/city-picker.min.js"></script>
+
+<script>
+    // 选择地区
+    $("#city").on("cp:updated", function () {
+        var citypicker = $(this).data("citypicker");
+        var code = citypicker.getCode("district") || citypicker.getCode("city") || citypicker.getCode("province");
+        $("#code").val(code);
+    });
+
+    // 选择头像
+    $('.avatar').click(function () {
+        $('#avatar').click();
+    });
+
+    // 更新头像预览
+    $('#avatar').change(function () {
+        let file = $(this)[0].files[0];
+
+        if (file) {
+            let reader = new FileReader();
+
+            reader.readAsDataURL(file);
+
+            reader.onload = function () {
+                $('.avatar img').attr('src', reader.result);
+            }
+        }
+    });
+</script>
