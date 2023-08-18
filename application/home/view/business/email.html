@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="/assets/home/css/profile.css">
+
+<div class="user">
+    <div class="avatar wow fadeInUp">
+        <img src="{$LoginBusiness.avatar_cdn}" />
+    </div>
+</div>
+
+<form class="mui-input-group" method="post" enctype="multipart/form-data">
+    <div class="mui-input-row">
+        <label>邮箱</label>
+        <input type="text" name="email" value="{$LoginBusiness.email}" class="mui-input-clear" placeholder="请输入邮箱"
+            required disabled />
+    </div>
+
+    <div class="mui-input-row">
+        <label>验证码</label>
+        <input type="text" name="code" class="mui-input-clear" placeholder="请输入验证码" required />
+    </div>
+
+
+    <div class="mui-button-row">
+        <button type="submit" class="mui-btn mui-btn-primary">确认</button>
+        <button type="button" class="mui-btn mui-btn-danger" onclick="history.go(-1)">返回</button>
+        <button type="button" id="send" class="mui-btn mui-btn-success">发送邮件</button>
+    </div>
+</form>
+
+<script>
+    const SECONDS = 60;
+    let timer;
+
+    $("#send").click(function () {
+        $.ajax({
+            type: 'post',
+            url: `{:url('/home/business/send')}`,
+            dataType: 'json',
+            success: function (res) {
+                if (res.code === 0) {
+                    mui.toast(res.msg, { duration: 2000 });
+                    return;
+                }
+
+                //轻提醒
+                mui.toast(res.msg, { duration: 2000 });
+
+                //倒计时
+                $(this).html(SECONDS);
+                $(this).attr('disabled', true);
+                timer = setInterval(countdown, 1000);
+            }
+        });
+    })
+
+    function countdown() {
+        const $sendBtn = $("#send")
+        let num = parseInt($sendBtn.html())
+
+        if (num <= 0) {
+            clearInterval(timer)
+            $("#send").removeAttr('disabled')
+            $("#send").html('重新发送验证码')
+        } else {
+            $sendBtn.html(num - 1)
+        }
+    }
+</script>

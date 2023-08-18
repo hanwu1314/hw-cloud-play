@@ -21,10 +21,12 @@
         <span>基本资料</span>
         <img src='/assets/home/images/row.png' />
     </a>
-    <a href="email.html" class="item">
+    {if condition="$LoginBusiness.auth == 0"}
+    <a href="{:url('/home/business/email')}" class="item">
         <span>邮箱认证</span>
         <img src='/assets/home/images/row.png' />
     </a>
+    {/if}
     <a href="order.html" class="item">
         <span>我的订单</span>
         <img src='/assets/home/images/row.png' />

@@ -3,6 +3,7 @@
 namespace app\home\controller;
 
 use app\common\controller\Home;
+use app\common\library\Email;
 
 class Business extends Home
 {
@@ -105,5 +106,138 @@ class Business extends Home
         }
 
         return $this->fetch();
+    }
+
+    /**
+     * 邮箱
+     */
+    public function email()
+    {
+        if ($this->request->isPost()) {
+            $code = $this->request->param('code', '', 'trim');
+            $email = $this->LoginBusiness['email'] ?? '';
+
+            if (empty($code) || empty($email)) {
+                $this->error('验证码或邮箱地址不能为空');
+            }
+
+            $where = [
+                'event' => 'email',
+                'code' => $code,
+                'email' => $email,
+                'times' => 0
+            ];
+
+            $Ems = model('Ems');
+
+
+            // 开启事务
+            $this->BusinessModel->startTrans();
+            $Ems->startTrans();
+
+            try {
+                $ems = $Ems->where($where)->find();
+
+                if (!$ems) {
+                    throw new \Exception('验证码错误');
+                }
+
+                $BusinessData = [
+                    'id' => $this->LoginBusiness['id'],
+                    'auth' => 1
+                ];
+
+                $BusinessStatus = $this->BusinessModel->isUpdate(true)->save($BusinessData);
+
+                if ($BusinessStatus === false) {
+                    throw new \Exception($this->BusinessModel->getError());
+                }
+
+                $EmsStatus = $Ems->destroy($ems['id']);
+
+                if ($EmsStatus === false) {
+                    throw new \Exception($Ems->getError());
+                }
+
+                $this->BusinessModel->commit();
+                $Ems->commit();
+            } catch (\Exception $e) {
+                $this->BusinessModel->rollback();
+                $Ems->rollback();
+                $this->error($e->getMessage());
+            }
+
+            $this->success('认证成功', url('/home/business/index'));
+        }
+
+        return $this->fetch();
+    }
+
+    /**
+     * 发送邮件
+     */
+    public function send()
+    {
+        if ($this->request->isAjax()) {
+            $email = $this->LoginBusiness['email'] ?? '';
+            if (empty($email)) {
+                $this->error('邮箱为空');
+            }
+
+            // 实例化邮箱验证码模型
+            $Ems = model('Ems');
+
+            // 组装条件
+            $where = [
+                'event' => 'email',
+                'email' => $email,
+                'times' => 0
+            ];
+            // 查询数据表是否有这条记录
+            $ems = $Ems->where($where)->find();
+
+            if ($ems) {
+                $this->error('已发送验证码,请检查您的邮箱');
+            }
+
+            // 实例化邮件类
+            $mail = new Email();
+
+            // 开启事务
+            $Ems->startTrans();
+            // 生成验证码
+            $code = build_ranstr(4);
+
+            $data = [
+                'event' => 'email',
+                'email' => $email,
+                'times' => 0,
+                'ip' => $this->request->ip(),
+                'code' => $code
+            ];
+
+            $EmsStatus = $Ems->validate('common/Ems')->save($data);
+            if ($EmsStatus === false) {
+                $this->error($Ems->getError());
+            }
+
+            // 正文内容
+            $html = "<div>您的邮箱认证码为：<b>$code</b></div>";
+
+            // 获取发送人的邮箱
+            $FromEmail = config('site.mail_from');
+
+            $res = $mail->from($FromEmail, '云平台')->subject('邮箱认证')->message($html)->to($email)->send();
+
+            if ($res === false) {
+                // 回滚事务
+                $Ems->rollback();
+                $this->error($mail->getError());
+            } else {
+                // 提交事务
+                $Ems->commit();
+                $this->success('发送成功');
+            }
+        }
     }
 }
