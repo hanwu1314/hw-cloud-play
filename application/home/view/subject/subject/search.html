@@ -1,0 +1,126 @@
+<link rel="stylesheet" href="/assets/home/plugin/mescroll/mescroll.min.css">
+<link rel="stylesheet" href="/assets/home/css/search.css">
+
+<!-- 搜索框 -->
+<div class="mui-input-row mui-search">
+    <input type="search" class="mui-input-clear" placeholder="请输入课程名称" name="search" />
+</div>
+
+<!-- 课程列表 -->
+<div id="subject-list" class="mescroll mui-content">
+    <ul class="mui-table-view">
+
+    </ul>
+</div>
+
+{include file='common/footer'/}
+
+<script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
+
+<script>
+    // 当前页
+    var page = 1;
+
+    // 每页查询多少条
+    var limit = 10;
+
+    // 关键词
+    var search = '';
+
+    //初始化下拉刷新插件
+    var scroll = new MeScroll('subject-list', {
+        down: {
+            //下拉
+            auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            callback: DownCallback //下拉刷新的回调
+        },
+        up: {
+            auto: true, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+            callback: UpCallback, //上拉回调,此处可简写
+            page: {
+                size: limit
+            },
+            toTop: { //配置回到顶部按钮
+                duration: 300,
+                src: "/assets/home/plugin/mescroll/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                offset: 100
+            },
+            htmlNodata: '<div class="more">没有更多了..</div>',
+        }
+    });
+
+    // 下拉刷新
+    function DownCallback() {
+        // 重置加载状态 清空page 直接从第一页开始
+        scroll.resetUpScroll();
+        $('#subject-list ul').empty();
+    }
+
+    // 上拉加载
+    function UpCallback(current) {
+        // 当前页
+        page = current.num;
+
+        // 每页显示多少条数据
+        limit = current.size;
+
+        // 封装数据
+        let data = {
+            page: page,
+            limit: limit,
+            search: search
+        }
+
+        $.ajax({
+            type: 'post',
+            url: `{:url('/home/subject/subject/search')}`,
+            data: data,
+            dataType: 'json',
+            success: function (res) {
+                if (res.code === 0) {
+                    // 隐藏下拉刷新和上拉加载的状态
+                    scroll.endBySize(0, 0);
+                    return;
+                }
+
+                let count = res.data.count;
+                let list = res.data.list;
+
+                // 隐藏下拉刷新和上拉加载的状态
+                scroll.endBySize(list.length, count);
+
+                // 输出数据
+                fetchList(list);
+            }
+        });
+    }
+
+    function fetchList(list) {
+        let temp = '';
+
+        for (let item of list) {
+            temp += `
+            <li class="mui-table-view-cell mui-media">
+                <a class="item" href="{:url('/home/subject/subject/info')}?id=${item.id}">
+                    <div class="thumb">
+                        <img class="img" src="${item.thumbs_cdn}">
+                    </div>
+                    <div class="info">
+                        <h5 class="title">${item.title}</h5>
+                        <p class="content mui-ellipsis">课程分类：${item.category.name}</p>
+                        <p class="content mui-ellipsis">创建时间：${item.createtime_text}</p>
+                        <p class="bottom">
+                            <span class="like mui-icon mui-icon-starhalf">
+                                <span>${item.likes_count}</span>
+                            </span>
+                            <span class="price">￥${item.price}</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+            `
+        }
+
+        $('#subject-list ul').append(temp);
+    }
+</script>

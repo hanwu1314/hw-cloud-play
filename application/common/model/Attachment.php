@@ -13,8 +13,7 @@ class Attachment extends Model
     protected $createTime = 'createtime';
     protected $updateTime = 'updatetime';
     // 定义字段类型
-    protected $type = [
-    ];
+    protected $type = [];
     protected $append = [
         'thumb_style'
     ];
