@@ -55,8 +55,8 @@
 <div class="title">课程章节</div>
 <ul class="mui-table-view">
     {if condition="$count > 0"}
-    {foreach($ChapterList as $item)}
-    <li class="mui-table-view-cell">{$item.title}</li>
+    {foreach($ChapterList as $key=> $item)}
+    <li onclick="toggle('{$item.id}')" class="mui-table-view-cell">{$key+1}.{$item.title}</li>
     {/foreach}
     {else /}
     <li class="mui-table-view-cell">暂无课程章节</li>
@@ -113,14 +113,41 @@
 <script src="/assets/home/plugin/ckplayer/ckplayer.min.js"></script>
 
 <script>
-    $("#iosActionsheetCancel").click(function () {
-        mui('#sheet1').popover('toggle');
-    })
+    // 课程id
+    let subid = "{$subject.id}";
+
+    // 定义一个章节的id
+    let cid = 0;
+
+    // 播放器对象
+    let player;
 
     // 点击播放
     $("#play").on('click', function () {
-        Paydata()
-    })
+        $.ajax({
+            type: 'post',
+            url: `{:url('/home/subject/subject/play')}`,
+            data: {
+                subid,
+                cid
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res.code === 0) {
+                    mui.toast(res.msg);
+
+                    if (res.data.buy === true) {
+                        mui('#sheet1').popover('toggle');
+                    }
+
+                    return;
+                } else {
+                    mui.toast(res.msg, { duration: 1500 })
+                }
+            }
+        })
+    });
+
 
     function Paydata() {
         mui('#sheet1').popover('toggle');
@@ -130,8 +157,25 @@
         mui('#sheet1').popover('toggle');
         var btnArray = ['否', '是'];
         mui.confirm('请问您确认购买吗？', '尊敬的用户', btnArray, function (e) {
-            if (e.index = 1) {
-                location.href = "./assets/buy.html";
+            if (e.index === 1) {
+                $.ajax({
+                    type: 'post',
+                    url: `{:url('/home/subject/subject/buy')}`,
+                    data: {
+                        subid
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code === 1) {
+                            mui.toast(res.msg);
+                            return;
+                        } else {
+                            mui.toast(res.msg);
+                            return;
+                        }
+                    }
+                })
+
             }
         })
     })
@@ -142,7 +186,7 @@
             type: 'post',
             url: `{:url('/home/subject/subject/like')}`,
             data: {
-                subid: `{$subject.id}`
+                subid: subid
             },
             dataType: 'json',
             success: function (res) {

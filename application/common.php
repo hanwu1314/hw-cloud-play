@@ -631,3 +631,73 @@ if (!function_exists('build_upload')) {
         return $result;
     }
 }
+
+if (!function_exists('build_code')) {
+    /**
+     * 生成唯一订单号
+     * @param String $prefix 指定的订单前缀
+     * @return String  返回字符串
+     */
+
+    function build_code($prefix = "")
+    {
+        @date_default_timezone_set("PRC"); // 设置脚本的默认时区为中国（PRC，中华人民共和国）时区。
+        $order_id_main = date('YmdHis') . rand(10000, 99999); // 当前日期和时间（年月日时分秒）与一个随机数连接起来
+        //订单号码主体长度
+        $order_id_len = strlen($order_id_main);
+        $order_id_sum = 0;
+        for ($i = 0; $i < $order_id_len; $i++) {
+            $order_id_sum += (int)(substr($order_id_main, $i, 1));
+        }
+        //唯一订单号码（YYYYMMDDHHIISSNNNNNNNNCC）
+        $osn = $prefix . $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT); //生成唯一订单号
+        return $osn;
+    }
+}
+
+/**
+ * 雪花算法
+ * @param Int $machineId 指定机器码
+ */
+function generateSnowflakeId($machineId)
+{
+    $epoch = 1630454400000; // 2021-09-01 00:00:00 UTC
+    $sequence = 0;
+    $lastTimestamp = -1;
+    // 返回当前时间的时间戳，以毫秒为单位。
+    $currentTimestamp = function () {
+        return floor(microtime(true) * 1000);
+    };
+    // 用于计算下一个毫秒的时间戳，以确保生成的标识符在不同毫秒内是唯一的
+    $tilNextMillis = function ($lastTimestamp) use ($currentTimestamp) {
+        $timestamp = $currentTimestamp();
+        while ($timestamp <= $lastTimestamp) {
+            $timestamp = $currentTimestamp();
+        }
+        return $timestamp;
+    };
+    // 获取当前时间戳
+    $timestamp = $currentTimestamp();
+    // 如果当前时间戳与上一次时间戳相等,表示同一毫秒内
+    // 那么会根据序列号规则增加序列号，并检查序列号是否达到上限，如果达到上限会等待下一毫秒。
+    if ($timestamp == $lastTimestamp) {
+        $sequence = ($sequence + 1) & 4095; // 12 bits
+        if ($sequence == 0) {
+            // 等待下一个毫秒
+            $timestamp = $tilNextMillis($lastTimestamp);
+        }
+    } else {
+        $sequence = 0;
+    }
+    // 更新上一次时间戳为当前时间戳，以便下一次生成时使用。
+    $lastTimestamp = $timestamp;
+    /**
+     * 这一行计算出标识符。它将时间戳、机器ID和序列号组合成一个整数，以生成最终的唯一标识符。
+     * 时间戳 41 位 + 机器 ID 10 位 + 序列号 12 位 = 63 位，再加上一个符号位（正数），总共为 64 位。
+     * 时间戳部分左移 22 位，即占用了标识符的前 41 位。这是因为时间戳部分通常占用了整个 64 位标识符的最高位，
+     * 从而保证生成的标识符在一段时间内是唯一的。左移 22 位是根据上述三个部分的位数来计算的
+     */
+    $id = (($timestamp - $epoch) << 22) | ($machineId << 10) | $sequence;
+
+    return $id;
+}
