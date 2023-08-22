@@ -21,7 +21,9 @@
             <!-- <img class="thumbs" src="./assets/images/thumbs-up.png" alt=""> -->
 
             <!-- 未点赞 -->
-            <img class="thumbs" src="{$subject.like_status ? '/assets/home/images/thumbs-up.png' : '/assets/home/images/thumbs.png'}" alt="">
+            <img class="thumbs"
+                src="{$subject.like_status ? '/assets/home/images/thumbs-up.png' : '/assets/home/images/thumbs.png'}"
+                alt="">
             <span class="num">{$subject.likes_count}</span>
         </div>
     </div>
@@ -53,11 +55,11 @@
 <div class="title">课程章节</div>
 <ul class="mui-table-view">
     {if condition="$count > 0"}
-        {foreach($ChapterList as $item)}
-            <li class="mui-table-view-cell">{$item.title}</li>
-        {/foreach}
+    {foreach($ChapterList as $item)}
+    <li class="mui-table-view-cell">{$item.title}</li>
+    {/foreach}
     {else /}
-        <li class="mui-table-view-cell">暂无课程章节</li>
+    <li class="mui-table-view-cell">暂无课程章节</li>
     {/if}
 </ul>
 
@@ -66,21 +68,21 @@
 <!-- 评论内容 -->
 <ul class="mui-table-view">
     {if condition="count($CommentList) > 0"}
-        {foreach($CommentList as $item)}
-            <li class="mui-table-view-cell mui-media">
-                <a href="javascript:;">
-                    <img class="mui-media-object mui-pull-left userimg" src="{$item.business.avatar_cdn}">
-                    <div class="mui-media-body">
-                        {$item.business.nickname ?: '未知昵称'}
-                        <p class='mui-ellipsis'>{$item.content}</p>
-                    </div>
-                </a>
-            </li>
-        {/foreach}
+    {foreach($CommentList as $item)}
+    <li class="mui-table-view-cell mui-media">
+        <a href="javascript:;">
+            <img class="mui-media-object mui-pull-left userimg" src="{$item.business.avatar_cdn}">
+            <div class="mui-media-body">
+                {$item.business.nickname ?? '未知昵称'}
+                <p class='mui-ellipsis'>{$item.content}</p>
+            </div>
+        </a>
+    </li>
+    {/foreach}
     {else /}
-        <li class="mui-table-view-cell mui-media">
-            暂无评论
-        </li>
+    <li class="mui-table-view-cell mui-media">
+        暂无评论
+    </li>
     {/if}
 </ul>
 
@@ -130,6 +132,35 @@
         mui.confirm('请问您确认购买吗？', '尊敬的用户', btnArray, function (e) {
             if (e.index = 1) {
                 location.href = "./assets/buy.html";
+            }
+        })
+    })
+
+    // 点赞以及取消点赞
+    $('.action').click(function () {
+        $.ajax({
+            type: 'post',
+            url: `{:url('/home/subject/subject/like')}`,
+            data: {
+                subid: `{$subject.id}`
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res.code === 1) {
+                    let status = res.msg.includes('取消点赞成功')
+                    if (status === true) {
+                        $('.thumbs').attr('src', '/assets/home/images/thumbs.png');
+                        $('.num').text(parseInt($('.num').text()) - 1);
+                    } else {
+                        $('.thumbs').attr('src', '/assets/home/images/thumbs-up.png');
+                        $('.num').text(parseInt($('.num').text()) + 1);
+                    }
+                    return;
+                } else {
+                    mui.toast(res.msg)
+                    return
+                }
+
             }
         })
     })

@@ -98,4 +98,54 @@ class Subject extends Home
 
         return $this->fetch();
     }
+
+    /**
+     * 点赞
+     */
+    public function like()
+    {
+        $subid = $this->request->param('subid', 0, 'trim');
+        // 查询课程是否存在
+        $subject = $this->SubjectModel->find($subid);
+
+        if (!$subject) {
+            $this->error('课程不存在');
+        }
+
+        // 分割数组
+        $likeArr = explode(',', $subject['likes']);
+        // 过滤空元素
+        $likeArr = array_filter($likeArr);
+
+        $msg = '';
+
+        if (in_array($this->LoginBusiness['id'], $likeArr)) {
+            $index = array_search($this->LoginBusiness['id'], $likeArr);
+
+            if ($index !== false) {
+                unset($likeArr[$index]);
+                $msg = '取消点赞';
+            } else {
+                $this->error('无法取消点赞');
+            }
+        } else {
+            $likeArr[] = $this->LoginBusiness['id'];
+
+            $msg = '点赞';
+        }
+
+        // 封装更新数据
+        $data = [
+            'id' => $subid,
+            'likes' => implode(',', $likeArr)
+        ];
+
+        $result = $this->SubjectModel->isUpdate(true)->save($data);
+
+        if ($result === false) {
+            $this->error($msg . '失败');
+        } else {
+            $this->success($msg . '成功');
+        }
+    }
 }
