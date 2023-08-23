@@ -9,13 +9,28 @@ class Index extends Controller
     /** 用户模型 */
     protected $BusinessModel = null;
 
+    // 课程模型
+    protected $SubjectModel = null;
+
     public function _initialize()
     {
         $this->BusinessModel = model('business.Business');
+        $this->SubjectModel = model('Subject.Subject');
     }
 
     public function index()
     {
+        // 查询点赞数最多的数据作为精选课程数据
+        $HotData = $this->SubjectModel->OrderRaw('LPAD(LOWER(likes),10,0) DESC')->limit(8)->select();
+
+        // 查询最新的课程作为轮播图的数据
+        $SubjectData = $this->SubjectModel->order('createtime DESC')->limit(5)->select();
+
+        // 赋值给视图使用
+        $this->assign([
+            'HotData' => $HotData,
+            'SubjectData' => $SubjectData
+        ]);
         return $this->fetch();
     }
 
