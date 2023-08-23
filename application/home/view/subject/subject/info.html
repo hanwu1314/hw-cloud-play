@@ -6,115 +6,118 @@
     <!-- 标题 -->
     <h1 class="mui-title">课程详情</h1>
 </header>
-<div id="cover">
-    <!-- 课程封面 -->
-    <img class="cover_bg" src="{$subject.thumbs_cdn}">
-    <!-- 中间播放键 -->
-    <div id="play">
-        <img src="/assets/home/images/play.png" />
-    </div>
-</div>
-
-<!-- ckplayer视频容器元素 -->
-<div id="video"></div>
-
-<!-- 课程信息 -->
-<div class="head">
-    <div class="info">
-        <h4 class="name">{$subject.title}</h4>
-        <div class="action">
-            <!-- 点赞 -->
-            <!-- <img class="thumbs" src="./assets/images/thumbs-up.png" alt=""> -->
-
-            <!-- 未点赞 -->
-            <img class="thumbs"
-                src="{$subject.like_status ? '/assets/home/images/thumbs-up.png' : '/assets/home/images/thumbs.png'}"
-                alt="">
-            <span class="num">{$subject.likes_count}</span>
+<div class="mui-content">
+    <div id="cover">
+        <!-- 课程封面 -->
+        <img class="cover_bg" src="{$subject.thumbs_cdn}">
+        <!-- 中间播放键 -->
+        <div id="play">
+            <img src="/assets/home/images/play.png" />
         </div>
     </div>
-</div>
 
-<div class="title">课程简介</div>
-<table class="list">
-    <tr>
-        <td>课程名称</td>
-        <td>{$subject.title}</td>
-    </tr>
-    <tr class="price">
-        <td>课程价格</td>
-        <td>￥{$subject.price}元</td>
-    </tr>
-    <tr>
-        <td>发布时间</td>
-        <td>{$subject.createtime_text}</td>
-    </tr>
-    <tr>
-        <td>章节总数</td>
-        <td>{$count}小节</td>
-    </tr>
-</table>
+    <!-- ckplayer视频容器元素 -->
+    <div id="video"></div>
+    <!-- 课程信息 -->
+    <div class="head">
+        <div class="info">
+            <h4 class="name">{$subject.title}</h4>
+            <div class="action">
+                <!-- 点赞 -->
+                <!-- <img class="thumbs" src="./assets/images/thumbs-up.png" alt=""> -->
 
-<div class="title">课程介绍</div>
-<div class="mui-table-view content">{$subject.content}</div>
-
-<div class="title">课程章节</div>
-<ul class="mui-table-view">
-    {if condition="$count > 0"}
-    {foreach($ChapterList as $key=> $item)}
-    <li onclick="toggle('{$item.id}')" class="mui-table-view-cell">{$key+1}.{$item.title}</li>
-    {/foreach}
-    {else /}
-    <li class="mui-table-view-cell">暂无课程章节</li>
-    {/if}
-</ul>
-
-<div class="title">用户评论</div>
-
-<!-- 评论内容 -->
-<ul class="mui-table-view">
-    {if condition="count($CommentList) > 0"}
-    {foreach($CommentList as $item)}
-    <li class="mui-table-view-cell mui-media">
-        <a href="javascript:;">
-            <img class="mui-media-object mui-pull-left userimg" src="{$item.business.avatar_cdn}">
-            <div class="mui-media-body">
-                {$item.business.nickname ?? '未知昵称'}
-                <p class='mui-ellipsis'>{$item.content}</p>
+                <!-- 未点赞 -->
+                <img class="thumbs"
+                    src="{$subject.like_status ? '/assets/home/images/thumbs-up.png' : '/assets/home/images/thumbs.png'}"
+                    alt="">
+                <span class="num">{$subject.likes_count}</span>
             </div>
-        </a>
-    </li>
-    {/foreach}
-    {else /}
-    <li class="mui-table-view-cell mui-media">
-        暂无评论
-    </li>
-    {/if}
-</ul>
+        </div>
+    </div>
 
-<div class="more">
-    <a href="comment_list.html" class="mui-btn mui-btn-primary mui-btn-outlined">查看更多评论</a>
-</div>
+    <div class="title">课程简介</div>
+    <table class="list">
+        <tr>
+            <td>课程名称</td>
+            <td>{$subject.title}</td>
+        </tr>
+        <tr class="price">
+            <td>课程价格</td>
+            <td>￥{$subject.price}元</td>
+        </tr>
+        <tr>
+            <td>发布时间</td>
+            <td>{$subject.createtime_text}</td>
+        </tr>
+        <tr>
+            <td>章节总数</td>
+            <td>{$count}小节</td>
+        </tr>
+    </table>
 
-<!-- 弹出菜单 -->
-<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action">
-    <!-- 可选择菜单 -->
+    <div class="title">课程介绍</div>
+    <div class="mui-table-view content">{$subject.content}</div>
+
+    <div class="title">课程章节</div>
     <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
-            <a id="buy" href="javascript:void(0)">
-                立即购买
+        {if condition="$count > 0"}
+        {foreach($ChapterList as $key=> $item)}
+        <li onclick="toggle('{$item.id}')" class="mui-table-view-cell">{$key+1}.{$item.title}</li>
+        {/foreach}
+        {else /}
+        <li class="mui-table-view-cell">暂无课程章节</li>
+        {/if}
+    </ul>
+
+    <div class="title">用户评论</div>
+
+    <!-- 评论内容 -->
+    <ul class="mui-table-view">
+        {if condition="count($CommentList) > 0"}
+        {foreach($CommentList as $item)}
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left userimg" src="{$item.business.avatar_cdn}">
+                <div class="mui-media-body">
+                    {$item.business.nickname ?? '未知昵称'}
+                    <p class='mui-ellipsis'>{$item.content}</p>
+                </div>
             </a>
         </li>
-    </ul>
-    <!-- 取消菜单 -->
-    <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
-            <a href="#sheet1"><b>取消</b></a>
+        {/foreach}
+        {else /}
+        <li class="mui-table-view-cell mui-media">
+            暂无评论
         </li>
+        {/if}
     </ul>
-</div>
+    {if condition="count($CommentList) > 0"}
+    <div class="more">
+        <a href="{:url('/home/subject/comment/index',['subid' => $subject.id])}"
+            class="mui-btn mui-btn-primary mui-btn-outlined">查看更多评论</a>
+    </div>
+    {/if}
 
-<button id="back-to-top" style="position: fixed;bottom:5vw;right:5vw;">回到顶部</button>
+    <!-- 弹出菜单 -->
+    <div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action">
+        <!-- 可选择菜单 -->
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a id="buy" href="javascript:void(0)">
+                    立即购买
+                </a>
+            </li>
+        </ul>
+        <!-- 取消菜单 -->
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a href="#sheet1"><b>取消</b></a>
+            </li>
+        </ul>
+    </div>
+
+    <button id="back-to-top" style="position: fixed;bottom:5vw;right:5vw;">回到顶部</button>
+</div>
 
 <!-- 加载ckplayer视频插件 -->
 <script src="/assets/home/plugin/ckplayer/js/ckplayer.js"></script>

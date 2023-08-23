@@ -5,16 +5,22 @@ namespace app\home\controller;
 use app\common\controller\Home;
 use app\common\library\Email;
 
+use think\Db;
+
 class Business extends Home
 {
 
     /** 用户模型 */
     protected $BusinessModel = null;
 
+    // 课程订单模型
+    protected $OrderModel = null;
+
     public function __construct()
     {
         parent::__construct();
         $this->BusinessModel = model('business.Business');
+        $this->OrderModel = model('Subject.Order');
     }
 
     public function index()
@@ -239,5 +245,50 @@ class Business extends Home
                 $this->success('发送成功');
             }
         }
+    }
+
+    /**
+     * 订单列表
+     */
+    public function order()
+    {
+        if ($this->request->isAjax()) {
+
+            $page = $this->request->param('page', 1, 'trim');
+            $limit = $this->request->param('limit', 20, 'trim');
+
+            $bid = $this->LoginBusiness['id'];
+
+
+            $where = [
+                'busid' => $this->LoginBusiness['id']
+            ];
+
+            $count = $this->OrderModel->where($where)->count();
+
+            if ($count <= 0) {
+                $this->error('暂无数据');
+            }
+
+            $list = $this->OrderModel
+                ->with(['subject'])
+                ->where($where)
+                ->page($page, $limit)
+                ->select();
+
+            // 组装数据
+            $data = [
+                'count' => $count,
+                'list' => $list
+            ];
+
+            // 是否有数据
+            if ($list) {
+                $this->success('返回数据', null, $data);
+            } else {
+                $this->error('暂无数据');
+            }
+        }
+        return $this->fetch();
     }
 }
