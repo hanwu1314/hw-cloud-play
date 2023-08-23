@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/assets/home/css/comment.css">
+
+<header class="mui-bar mui-bar-nav mui-bar-nav-bg">
+    <a id="icon-menu" style="touch-action: none;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">添加评价</h1>
+</header>
+
+<div class="mui-content">
+    <img src="{$order.subject.thumbs_cdn}" style="width:100%;">
+    <div class="weui-cells__title" style="font-size:16px;">{$order.subject.title}</div>
+    <form method="post">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请输入内容" name="content" rows="3"></textarea>
+                    <div class="weui-textarea-counter"><span>0</span>/200</div>
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <button type="submit" class="mui-btn mui-btn-primary">立即提交</button>
+        </div>
+    </form>
+</div>
