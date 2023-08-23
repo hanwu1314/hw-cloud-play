@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="/assets/home/css/details.css">
 <link rel="stylesheet" href="/assets/home/plugin/ckplayer/css/ckplayer.css">
+<header class="mui-bar mui-bar-nav mui-bar-nav-bg">
+    <!--  左边  -->
+    <a id="icon-menu" style="touch-action: none;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <!-- 标题 -->
+    <h1 class="mui-title">课程详情</h1>
+</header>
 <div id="cover">
     <!-- 课程封面 -->
     <img class="cover_bg" src="{$subject.thumbs_cdn}">
@@ -168,8 +174,6 @@
                     volume: 1,                           //默认音量
                     autoplay: true,
                 };
-
-
                 player = new ckplayer(videoObject)
             }
         })

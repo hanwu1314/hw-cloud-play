@@ -1,26 +1,27 @@
 body {
   font-family: "Microsoft YaHei";
+  margin-top: 44px;
 }
 
 p {
   font-size: 4.5vw;
 }
 
-.info{
+.info {
   display: flex;
-  width:100%;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   align-content: stretch;
 }
 
-.info h4{
-  margin:0;
-  padding:0;
-  margin-top:5px;
+.info h4 {
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
 }
 
-.info .action{
+.info .action {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -34,8 +35,8 @@ p {
   font-size: 16px;
 }
 
-.content{
-  padding:10px;
+.content {
+  padding: 10px;
 }
 
 .userimg {
@@ -47,12 +48,14 @@ p {
   height: auto;
   padding: 20px 15px;
 }
+
 .ins {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
 }
+
 .price {
   color: red;
   font-weight: 600;
@@ -71,67 +74,83 @@ p {
   line-height: 30px;
 }
 
-.head .weui-media-box__title{
+.head .weui-media-box__title {
   margin-bottom: 15px;
 }
 
-#cover{
+#cover {
   height: 274px;
+  position: relative;
 }
 
-#cover .cover_bg{
-  width:100%;height: 100%;object-fit: cover;
+#cover .cover_bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
 }
 
-#play{
-  width:100%; height:70vw; text-align:center; line-height:80vw; position:absolute; top:0;
+#play {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 80vw;
+  position: absolute;
+  top: 0;
 }
 
-#play img{
-  width:20vw; height:20vw;
+#play img {
+  width: 20vw;
+  height: 20vw;
 }
 
-#video{
-  width:100%;height: 274px;display:none;
+#video {
+  width: 100%;
+  height: 274px;
+  display: none;
 }
 
-.head .weui-media-box__title .content{
-  float:right; margin-right:10px; color:#6d6d72; font-size:3vw;
+.head .weui-media-box__title .content {
+  float: right;
+  margin-right: 10px;
+  color: #6d6d72;
+  font-size: 3vw;
 }
 
 .mui-table-view {
   box-sizing: content-box;
   line-height: normal;
 }
-.mui-table-view img{
-  width: 100%!important;
-  height:100%;
+
+.mui-table-view img {
+  width: 100% !important;
+  height: 100%;
   object-fit: cover;
 }
 
-.list{
-  width:100%;
-  margin:0 auto;
-  border:1px solid #ccc;
-  background:#fff;
+.list {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  background: #fff;
 }
 
-.list td{
-  border:1px solid #ccc;
-  height:35px;
+.list td {
+  border: 1px solid #ccc;
+  height: 35px;
 }
 
-.list td:first-child{
-  width:30%;
+.list td:first-child {
+  width: 30%;
   text-align: center;
 }
 
-.list td:last-child{
+.list td:last-child {
   text-indent: 10px;
 }
 
-.more{
-  width:100%;
+.more {
+  width: 100%;
   text-align: center;
-  margin:20px 0px;
+  margin: 20px 0px;
 }
