@@ -16,11 +16,15 @@ class Business extends Home
     // 课程订单模型
     protected $OrderModel = null;
 
+    // 消费记录模型
+    protected $RecordModel = null;
+
     public function __construct()
     {
         parent::__construct();
         $this->BusinessModel = model('business.Business');
         $this->OrderModel = model('Subject.Order');
+        $this->RecordModel = model('Business.Record');
     }
 
     public function index()
@@ -273,6 +277,40 @@ class Business extends Home
             $list = $this->OrderModel
                 ->with(['subject'])
                 ->where($where)
+                ->page($page, $limit)
+                ->select();
+
+            // 组装数据
+            $data = [
+                'count' => $count,
+                'list' => $list
+            ];
+
+            // 是否有数据
+            if ($list) {
+                $this->success('返回数据', null, $data);
+            } else {
+                $this->error('暂无数据');
+            }
+        }
+        return $this->fetch();
+    }
+    /**
+     * 消费记录
+     */
+    public function record()
+    {
+        if ($this->request->isAjax()) {
+            // 接收参数
+            $page = $this->request->param('page', 1, 'trim');
+            $limit = $this->request->param('limit', 20, 'trim');
+
+            // 获取数据总条数
+            $count = $this->RecordModel->where(['busid' => $this->LoginBusiness['id']])->count();
+
+            // 查询数据
+            $list = $this->RecordModel
+                ->where(['busid' => $this->LoginBusiness['id']])
                 ->page($page, $limit)
                 ->select();
 
