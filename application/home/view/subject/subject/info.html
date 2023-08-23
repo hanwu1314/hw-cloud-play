@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/assets/home/css/details.css">
-
+<link rel="stylesheet" href="/assets/home/plugin/ckplayer/css/ckplayer.css">
 <div id="cover">
     <!-- 课程封面 -->
     <img class="cover_bg" src="{$subject.thumbs_cdn}">
@@ -108,9 +108,10 @@
     </ul>
 </div>
 
+<button id="back-to-top" style="position: fixed;bottom:5vw;right:5vw;">回到顶部</button>
 
 <!-- 加载ckplayer视频插件 -->
-<script src="/assets/home/plugin/ckplayer/ckplayer.min.js"></script>
+<script src="/assets/home/plugin/ckplayer/js/ckplayer.js"></script>
 
 <script>
     // 课程id
@@ -120,7 +121,19 @@
     let cid = 0;
 
     // 播放器对象
-    let player;
+    let player = null;
+
+    // 切换章节
+    function toggle(id) {
+        cid = id;
+        if (player) {
+            player.pause()
+            player.remove()
+        }
+        $('html, body').animate({ scrollTop: 0 }, 800);
+        $('#cover').css('display', 'block')
+        $('#video').css('display', 'none')
+    }
 
     // 点击播放
     $("#play").on('click', function () {
@@ -134,20 +147,33 @@
             dataType: 'json',
             success: function (res) {
                 if (res.code === 0) {
-                    mui.toast(res.msg);
+                    mui.toast(res.msg)
 
                     if (res.data.buy === true) {
-                        mui('#sheet1').popover('toggle');
+                        mui('#sheet1').popover('toggle')
                     }
-
-                    return;
-                } else {
-                    mui.toast(res.msg, { duration: 1500 })
+                    return
                 }
+                let url = res.data?.url;
+                if (!url) {
+                    mui.toast(res.msg)
+                    return
+                }
+                $('#cover').css('display', 'none')
+                $('#video').css('display', 'block')
+
+                var videoObject = {
+                    container: '#video',                 //视频容器
+                    video: url,                          //视频地址
+                    volume: 1,                           //默认音量
+                    autoplay: true,
+                };
+
+
+                player = new ckplayer(videoObject)
             }
         })
     });
-
 
     function Paydata() {
         mui('#sheet1').popover('toggle');
@@ -208,5 +234,20 @@
             }
         })
     })
+
+
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) { // 当滚动超过100像素时显示回到顶部按钮
+                $('#back-to-top').fadeIn();
+            } else {
+                $('#back-to-top').fadeOut();
+            }
+        });
+
+        $('#back-to-top').click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 800); // 动画返回顶部，速度为800毫秒
+        });
+    });
 
 </script>

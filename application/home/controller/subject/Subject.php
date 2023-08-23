@@ -184,8 +184,19 @@ class Subject extends Home
 
         if (empty($order)) {
             $this->error('请先购买课程', null, ['buy' => true]);
+        }
+        // 查询用户要播放的课程章节
+        $where = [
+            'subid' => $subid
+        ];
+        if ($cid) {
+            $where['id'] = $cid;
+        }
+        $chapter = $this->ChapterModel->where($where)->order("id ASC")->find();
+        if ($chapter) {
+            $this->success('查询成功', null, $chapter);
         } else {
-            $this->success('你已经购买了课程');
+            $this->error('暂无章节播放地址');
         }
     }
     /**
