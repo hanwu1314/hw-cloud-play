@@ -17,7 +17,8 @@
 </div>
 <!-- 下拉刷新 上拉加载的插件 -->
 <script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
-<script src="/assets/utils/formatDate.js"></script>
+<!-- <script src="/assets/utils/formatDate.js"></script> -->
+<script src="/assets/utils/day.js"></script>
 
 <script>
     // 当前页
@@ -106,7 +107,9 @@
                     </div>
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">购买时间</label>
-                        <span class="weui-form-preview__value">${formatDate(item.createtime, "yyyy/MM/dd hh:mm:ss")}</span>
+                        <span class="weui-form-preview__value">
+                            ${dayjs.unix(item.createtime).format('YYYY/MM/DD HH:mm:ss')}
+                        </span>
                     </div>
                 </div>
                 <div class="weui-form-preview__ft">
