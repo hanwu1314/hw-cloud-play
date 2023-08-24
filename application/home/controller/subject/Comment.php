@@ -18,7 +18,7 @@ class Comment extends Home
         parent::__construct();
 
         // 加载模型
-        $this->CommentModel = model('Subject.Comment');
+        $this->CommentModel = model('subject.Comment');
     }
 
     public function index()
@@ -56,7 +56,7 @@ class Comment extends Home
     {
         $orderid = $this->request->param('orderid', 0, 'trim');
         // 根据订单id 查询订单
-        $order = model('Subject.Order')->with(['subject'])
+        $order = model('subject.Order')->with(['subject'])
             ->where(['busid' => $this->LoginBusiness['id'], 'order.id' => $orderid])->find();
 
         if (!$order) {
@@ -83,7 +83,7 @@ class Comment extends Home
                 'busid' => $this->LoginBusiness['id']
             ];
 
-            $result = $this->CommentModel->validate('common/Subject/Comment')->save($data);
+            $result = $this->CommentModel->validate('common/subject/Comment')->save($data);
 
             if ($result === false) {
                 $this->error($this->CommentModel->getError());

@@ -15,7 +15,7 @@ class Index extends Controller
     public function _initialize()
     {
         $this->BusinessModel = model('business.Business');
-        $this->SubjectModel = model('Subject.Subject');
+        $this->SubjectModel = model('subject.Subject');
     }
 
     public function index()

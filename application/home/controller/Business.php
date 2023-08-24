@@ -23,8 +23,8 @@ class Business extends Home
     {
         parent::__construct();
         $this->BusinessModel = model('business.Business');
-        $this->OrderModel = model('Subject.Order');
-        $this->RecordModel = model('Business.Record');
+        $this->OrderModel = model('subject.Order');
+        $this->RecordModel = model('business.Record');
     }
 
     public function index()

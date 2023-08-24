@@ -30,7 +30,7 @@ class Order extends Model
     public function subject()
     {
         return $this->belongsTo(
-            'app\common\model\Subject\Subject',
+            'app\common\model\subject\Subject',
             'subid',
             'id',
             [],
@@ -46,7 +46,7 @@ class Order extends Model
         $busid = $data['busid'] ?? '';
         $subid = $data['subid'] ?? '';
 
-        $comment = model('Subject.Comment')->where(['busid' => $busid, 'subid' => $subid])->find();
+        $comment = model('subject.Comment')->where(['busid' => $busid, 'subid' => $subid])->find();
 
         if ($comment) {
             return true;

@@ -34,8 +34,8 @@ class Subject extends Home
         $this->ChapterModel = model('subject.Chapter');
         $this->CommentModel = model('subject.Comment');
         $this->OrderModel = model('subject.Order');
-        $this->BusinessModel = model('Business.Business');
-        $this->RecordModel = model('Business.Record');
+        $this->BusinessModel = model('business.Business');
+        $this->RecordModel = model('business.Record');
     }
 
     public function search()

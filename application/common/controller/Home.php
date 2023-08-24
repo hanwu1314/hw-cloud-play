@@ -32,7 +32,7 @@ class Home extends Controller
         // 获取cookie
         $LoginBusiness = cookie('LoginBusiness') ?? [];
         if (empty($LoginBusiness)) {
-            $this->error('请先登录', url('home/index/login'));
+            $this->error('请先登录', url('/home/index/login'));
         }
 
         // 从登录信息获取相应的数据查询数据表有没有这个用户

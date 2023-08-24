@@ -2,7 +2,7 @@
 
 return array (
   'name' => '寒舞',
-  'beian' => '',
+  'beian' => '粤ICP备15000000号-1',
   'cdnurl' => '',
   'version' => '1.0.3',
   'timezone' => 'Asia/Shanghai',

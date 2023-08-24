@@ -20,7 +20,7 @@ return [
     // 数据库名
     'database'        => Env::get('database.database', 'fastdb'),
     // 用户名
-    'username'        => Env::get('database.username', 'root'),
+    'username'        => Env::get('database.username', 'user'),
     // 密码
     'password'        => Env::get('database.password', 'root'),
     // 端口

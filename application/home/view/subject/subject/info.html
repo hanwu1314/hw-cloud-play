@@ -157,13 +157,19 @@
             success: function (res) {
                 if (res.code === 0) {
                     mui.toast(res.msg)
-
+                    let url = res?.url;
+                    setTimeout(() => {
+                        if (url) {
+                            location.href = url;
+                        }
+                    }, 2000)
                     if (res.data.buy === true) {
                         mui('#sheet1').popover('toggle')
                     }
                     return
                 }
                 let url = res.data?.url;
+
                 if (!url) {
                     mui.toast(res.msg)
                     return
