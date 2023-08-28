@@ -21,7 +21,7 @@
         <span>基本资料</span>
         <img src='/assets/home/images/row.png' />
     </a>
-    {if condition="$LoginBusiness.auth == 0"}
+    {if condition="$LoginBusiness.auth == 0 && $LoginBusiness['email']"}
     <a href="{:url('/home/business/email')}" class="item">
         <span>邮箱认证</span>
         <img src='/assets/home/images/row.png' />
