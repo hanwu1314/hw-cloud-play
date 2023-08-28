@@ -174,4 +174,10 @@ class Index extends Controller
             $this->success('退出账号成功');
         }
     }
+
+    // 联系我们
+    public function contact()
+    {
+        return $this->fetch();
+    }
 }

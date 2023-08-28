@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="/assets/home/css/swiper-bundle.css">
+<link href="/assets/home/css/contact.css" rel="stylesheet" />
+<style>
+    #container {   height: 100%; }
+</style>
+
+<!-- 头部 -->
+<header class="mui-bar mui-bar-nav mui-bar-nav-bg">
+    <!--  左边  -->   
+    <a id="icon-menu" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+
+    <!-- 标题 -->
+    <h1 class="mui-title">联系我们</h1>
+</header>
+
+<div class="mui-content">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <a class="imgs">
+                    <img src="/assets/home/images/video5.png">
+                    <p class="mui-slider-title">Javascript从零开始</p>
+                </a>
+            </div>
+            <div class="swiper-slide">
+                <a class="imgs">
+                    <img src="/assets/home/images/video3.png">
+                    <p class="mui-slider-title">Javascript从零开始1111</p>
+                </a>
+            </div>
+            <div class="swiper-slide">
+                <a class="imgs">
+                    <img src="/assets/home/images/video2.png">
+                    <p class="mui-slider-title">Javascript从零开始222</p>
+                </a>
+            </div>
+        </div>
+        <div class="swiper-pagination" style="text-align: right;"></div>
+    </div>
+</div>
+
+<table class="list">
+    <tr>
+        <td>市场销售</td>
+        <td>185-1242-1111</td>
+    </tr>
+    <tr class="price">
+        <td>技术支持</td>
+        <td>139-1234-5678</td>
+    </tr>
+    <tr>
+        <td>产品售后</td>
+        <td>178-1422-3211</td>
+    </tr>
+    <tr>
+        <td>市场销售</td>
+        <td>152-2233-6555</td>
+    </tr>
+</table>
+
+<div id="container" style="text-align: center;margin:20px 0px;">
+    
+</div>
+
+<script src="/assets/home/js/swiper-bundle.min.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=sD9ReBqDzDA7rB5KHwlGYmzfOy1Acu5p"></script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
+    });
+
+    var map = new BMapGL.Map("container");// 创建地图实例 
+    var point = new BMapGL.Point(113.25134, 23.13198);// 创建点坐标 
+    map.centerAndZoom(point,20);// 初始化地图，设置中心点坐标和地图级别
+</script>

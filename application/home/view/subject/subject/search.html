@@ -27,6 +27,17 @@
     // 关键词
     var search = '';
 
+
+    // 搜索
+    $("input[name=search]").keydown(function (e) {
+        //回车键
+        if (e.keyCode == 13 || e.keyCode == 108) {
+            search = $.trim($(this).val());
+            DownCallback();
+            return;
+        }
+    });
+
     //初始化下拉刷新插件
     var scroll = new MeScroll('subject-list', {
         down: {

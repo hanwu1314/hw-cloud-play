@@ -13,11 +13,26 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Thumbs')}:</label>
+        <label for="c-thumbs" class="control-label col-xs-12 col-sm-2">{:__('Thumbs')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <textarea id="c-thumbs" class="form-control " rows="5" name="row[thumbs]" cols="50"></textarea>
+            <div class="input-group">
+                <input id="c-thumbs" data-rule="" class="form-control" size="50" name="row[thumbs]" type="text">
+                <!-- 上传和选择的按钮 -->
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-thumbs" class="btn btn-danger faupload"
+                            data-input-id="c-thumbs" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp"
+                            data-multiple="false" data-preview-id="p-thumbs"><i class="fa fa-upload"></i>
+                            上传</button></span>
+                    <span><button type="button" id="fachoose-thumbs" class="btn btn-primary fachoose"
+                            data-input-id="c-thumbs" data-mimetype="image/*" data-multiple="false"><i
+                                class="fa fa-list"></i> 选择</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-thumbs"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-thumbs"></ul>
         </div>
     </div>
+
     <div class="form-group">
         <label class="control-label col-xs-12 col-sm-2">{:__('Likes')}:</label>
         <div class="col-xs-12 col-sm-8">

@@ -26,6 +26,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                     [
                         { checkbox: true },
                         { field: 'id', title: __('Id'), sortable: true },
+                        { field: 'thumbs_cdn', title: __('Thumbs'), events: Table.api.events.image, formatter: Table.api.formatter.image },
                         { field: 'title', title: __('Title'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content },
                         { field: 'price', title: __('Price'), operate: 'BETWEEN' },
                         { field: 'category.name', title: __('Cateid') },
