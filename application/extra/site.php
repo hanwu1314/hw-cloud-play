@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'name' => '寒舞',
+  'name' => '云平台',
   'beian' => '粤ICP备15000000号-1',
   'cdnurl' => '',
   'version' => '1.0.3',

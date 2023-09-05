@@ -13,7 +13,7 @@ return [
     /**
      * 文件保存格式
      */
-    'savekey'   => '/uploads/{year}{mon}{day}/{rabdom32}{.suffix}',
+    'savekey'   => '/uploads/{year}{mon}{day}/{random32}{.suffix}',
     /**
      * 最大可上传大小
      */
