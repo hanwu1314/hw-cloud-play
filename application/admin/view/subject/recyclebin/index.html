@@ -1,14 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="panel panel-default panel-intro">
+    <!-- 选项卡标题 -->
+    <div class="panel-heading">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#subject" data-toggle="tab">课程回收站</a></li>
+            <li><a href="#order" data-toggle="tab">课程订单回收站</a></li>
+        </ul>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+            <!-- 课程回收站 -->
+            <div class="tab-pane fade active in" id="subject">
+                <!-- 工具栏 -->
+                <div id="toolbar1" class="toolbar">
+                    {:build_toolbar(['refresh','del'])}
+                    <a href="javascript:;" class="btn btn-success btn-reduction btn-disabled disabled" title="还原"><i
+                            class="fa fa-reply"></i> 还原</a>
+                </div>
 
-<body>
-    <h1>sadadads</h1>
-</body>
+                <!-- 表格结构 -->
+                <table id="table1" class="table table-striped table-bordered table-hover table-nowrap" width="100%">
+                </table>
+            </div>
 
-</html>
+            <!-- 课程订单回收站 -->
+            <div class="tab-pane fade" id="order">
+                <!-- 工具栏 -->
+                <div id="toolbar2" class="toolbar">
+                    {:build_toolbar(['refresh','del'])}
+                    <a href="javascript:;" class="btn btn-success btn-reduction btn-disabled disabled" title="还原"><i
+                            class="fa fa-reply"></i> 还原</a>
+                </div>
+
+                <!-- 表格结构 -->
+                <table id="table2" class="table table-striped table-bordered table-hover table-nowrap" width="100%">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

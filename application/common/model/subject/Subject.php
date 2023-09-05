@@ -3,9 +3,13 @@
 namespace app\common\model\subject;
 
 use think\Model;
+// 引入软删除模型
+use traits\model\SoftDelete;
 
 class Subject extends Model
 {
+    // 使用软删除模型
+    use SoftDelete;
     //模型对应的是哪张表
     protected $name = "subject";
 
@@ -18,7 +22,8 @@ class Subject extends Model
 
     //禁止 写入的时间字段
     protected $updateTime = false;
-
+    // 软删除字段
+    protected $deleteTime = 'deletetime';
     // 追加属性
     protected $append = [
         'likes_count',
@@ -45,17 +50,16 @@ class Subject extends Model
         return count($likes);
     }
 
-    public function getCreatetimeTextAttr($value,$data)
+    public function getCreatetimeTextAttr($value, $data)
     {
         $createtime = $data['createtime'] ?? '';
 
-        return date("Y-m-d",$createtime);
+        return date("Y-m-d", $createtime);
     }
 
     // 关联查询
     public function category()
     {
-        return $this->belongsTo('app\common\model\subject\Category','cateid','id',[],'LEFT')->setEagerlyType(0);
+        return $this->belongsTo('app\common\model\subject\Category', 'cateid', 'id', [], 'LEFT')->setEagerlyType(0);
     }
-
 }

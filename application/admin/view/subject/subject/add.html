@@ -1,31 +1,31 @@
-<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+<form id="add-form" class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST">
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Cateid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_select('row[cateid]', $CateData, null, ['class'=>'selectpicker', 'required'=>''])}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="title" class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="title" name="row[title]" data-rule="required;title"
+                placeholder="{:__('Title')}" />
+        </div>
+    </div>
 
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-title" class="form-control" name="row[title]" type="text">
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <textarea id="c-content" class="form-control editor" rows="5" name="row[content]" cols="50"></textarea>
-        </div>
-    </div>
     <div class="form-group">
         <label for="c-thumbs" class="control-label col-xs-12 col-sm-2">{:__('Thumbs')}:</label>
         <div class="col-xs-12 col-sm-8">
             <div class="input-group">
                 <input id="c-thumbs" data-rule="" class="form-control" size="50" name="row[thumbs]" type="text">
-                <!-- 上传和选择的按钮 -->
                 <div class="input-group-addon no-border no-padding">
                     <span><button type="button" id="faupload-thumbs" class="btn btn-danger faupload"
                             data-input-id="c-thumbs" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp"
                             data-multiple="false" data-preview-id="p-thumbs"><i class="fa fa-upload"></i>
-                            上传</button></span>
+                            {:__('Upload')}</button></span>
                     <span><button type="button" id="fachoose-thumbs" class="btn btn-primary fachoose"
                             data-input-id="c-thumbs" data-mimetype="image/*" data-multiple="false"><i
-                                class="fa fa-list"></i> 选择</button></span>
+                                class="fa fa-list"></i> {:__('Choose')}</button></span>
                 </div>
                 <span class="msg-box n-right" for="c-thumbs"></span>
             </div>
@@ -34,27 +34,25 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Likes')}:</label>
+        <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <textarea id="c-likes" class="form-control " rows="5" name="row[likes]" cols="50"></textarea>
+            <input type="text" class="form-control" id="price" name="row[price]" data-rule="required;price"
+                placeholder="{:__('Price')}" />
         </div>
     </div>
+
     <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
+        <label for="content" class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
         <div class="col-xs-12 col-sm-8">
-            <input id="c-price" class="form-control" step="0.01" name="row[price]" type="number">
+            <textarea class="form-control editor" id="content" name="row[content]"></textarea>
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-xs-12 col-sm-2">{:__('Cateid')}:</label>
-        <div class="col-xs-12 col-sm-8">
-            <input id="c-cateid" min="0" class="form-control" name="row[cateid]" type="number">
-        </div>
-    </div>
-    <div class="form-group layer-footer">
+
+    <div class="form-group hidden layer-footer">
         <label class="control-label col-xs-12 col-sm-2"></label>
         <div class="col-xs-12 col-sm-8">
-            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
         </div>
     </div>
 </form>
