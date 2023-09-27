@@ -98,4 +98,37 @@ class Base extends Controller
 
         $this->success('登录成功',null,$data);
     }
+
+    public function check()
+    {
+        $id = $this->request->param('id',0,'trim');
+        $mobile = $this->request->param('mobile','','trim');
+
+        $business = $this->BusinessModel->where(['id' => $id,'mobile' => $mobile])->find();
+
+        if(!$business)
+        {
+            $this->error('非法登录');
+        }
+
+        // 封装返回用户信息
+        $data = [
+            'id' => $business['id'],
+            'mobile' => $business['mobile'],
+            'mobile_text' => $business['mobile_text'],
+            'avatar' => $business['avatar'],
+            'avatar_cdn' => $business['avatar_cdn'],
+            'nickname' => $business['nickname'],
+            'email' => $business['email'],
+            'gender' => $business['gender'],
+            'province' => $business['province'],
+            'city' => $business['city'],
+            'district' => $business['district'],
+            'region_text' => $business['region_text'],
+            'auth' => $business['auth'],
+        ];
+
+        $this->success('验证成功',null,$data);
+
+    }
 }
