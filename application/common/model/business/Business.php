@@ -2,6 +2,7 @@
 
 namespace app\common\model\business;
 
+use think\Env;
 use think\Model;
 
 class Business extends Model
@@ -17,7 +18,8 @@ class Business extends Model
     /** 追加字段 */
     protected $append = [
         'mobile_text',
-        'avatar_cdn'
+        'avatar_cdn',
+        'region_text'
     ];
     /**
      * 获取手机号将其加密
@@ -42,8 +44,35 @@ class Business extends Model
         }
 
         // 获取网站域名
-        $cdn = config('site.url');
+        $cdn = Env::get('site.url',config('site.url'));
+
 
         return $cdn . $avatar;
+    }
+
+    public function getRegionTextAttr($value,$data)
+    {
+        $region_text = '';
+
+        $province = model('Region')->where(['code' => $data['province']])->value('name');
+        $city = model('Region')->where(['code' => $data['city']])->value('name');
+        $district = model('Region')->where(['code' => $data['district']])->value('name');
+
+        if($province)
+        {
+            $region_text = $province;
+        }
+
+        if($city)
+        {
+            $region_text .= '-' . $city;
+        }
+
+        if($district)
+        {
+            $region_text .=  '-' . $district;
+        }
+
+        return $region_text;
     }
 }
