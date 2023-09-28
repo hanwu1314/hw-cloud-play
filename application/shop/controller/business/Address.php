@@ -18,7 +18,23 @@ class Address extends Controller
     
     public function index()
     {
-        //
+        $busid = $this->request->param('busid','','trim');
+
+        $business = model('business.Business')->find($busid);
+
+        if(!$business)
+        {
+            $this->error('用户不存在');
+        }
+
+        $list = $this->AddressModel->where(['busid' => $busid])->select();
+
+        if($list)
+        {
+            $this->success('查询收货地址数据成功',null,$list);
+        }else{
+            $this->error('暂无收货地址');
+        }
     }
 
     public function add()
