@@ -220,6 +220,33 @@ class Address extends Controller
         }
 
     }
+    public function del()
+    {
+        $id = $this->request->param('id','','trim');
+        $busid = $this->request->param('busid','','trim');
 
+        $address = $this->AddressModel->find($id);
+
+        if(!$address)
+        {
+            $this->error('该收货地址不存在');
+        }
+
+        $auth = $this->AddressModel->where(['id' => $id, 'busid' => $busid])->find();
+
+        if(!$auth)
+        {
+            $this->error('您没有权限修改他人的收货地址');
+        }
+
+        $result = $this->AddressModel->destroy($id);
+
+        if($result === false)
+        {
+            $this->error('删除失败');
+        }else{
+            $this->success('删除成功');
+        }
+    }
     
 }
